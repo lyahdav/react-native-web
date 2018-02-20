@@ -9,14 +9,23 @@
  */
 
 import createPrefixer from 'inline-style-prefixer/static/createPrefixer';
+import createPrefixerDynamic from 'inline-style-prefixer/dynamic/createPrefixer';
 import staticData from './static';
+import dynamicData from './dynamic';
 
 const prefixAll = createPrefixer(staticData);
 
-export default prefixAll;
+const Prefixer = createPrefixerDynamic(dynamicData, prefixAll);
+
+function dynamicPrefixAll(style) {
+  const prefixer = new Prefixer();
+  return prefixer.prefix(style);
+}
+
+export default dynamicPrefixAll;
 
 export const prefixInlineStyles = (style: Object) => {
-  const prefixedStyles = prefixAll(style);
+  const prefixedStyles = dynamicPrefixAll(style);
 
   // React@15 removed undocumented support for fallback values in
   // inline-styles. Revert array values to the standard CSS value

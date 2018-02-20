@@ -18,4 +18,5 @@ const browserList = {
 
 generateData(browserList, {
   staticPath: path.join(__dirname, '../src/modules/prefixStyles/static.js'),
+  dynamicPath: path.join(__dirname, '../src/modules/prefixStyles/dynamic.js'),
 });
