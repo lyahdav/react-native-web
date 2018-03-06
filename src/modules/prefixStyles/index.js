@@ -17,15 +17,27 @@ const prefixAll = createPrefixer(staticData);
 
 const Prefixer = createPrefixerDynamic(dynamicData, prefixAll);
 
-function dynamicPrefixAll(style) {
-  const prefixer = new Prefixer();
-  return prefixer.prefix(style);
+function isLegacyAndroidWebView() {
+  if (!window.navigator) {
+    return false;
+  }
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  return userAgent.indexOf('/android/') > -1;
 }
 
-export default dynamicPrefixAll;
+function prefixAllWrapper(style) {
+  if (!isLegacyAndroidWebView()) {
+      const prefixer = new Prefixer();
+      return prefixer.prefix(style);
+  } else {
+      return prefixAll(style);
+  }
+}
+
+export default prefixAllWrapper;
 
 export const prefixInlineStyles = (style: Object) => {
-  const prefixedStyles = dynamicPrefixAll(style);
+  const prefixedStyles = prefixAllWrapper(style);
 
   // React@15 removed undocumented support for fallback values in
   // inline-styles. Revert array values to the standard CSS value
