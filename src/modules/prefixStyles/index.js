@@ -18,6 +18,9 @@ const prefixAll = createPrefixer(staticData);
 const Prefixer = createPrefixerDynamic(dynamicData, prefixAll);
 
 function isLegacyAndroidWebView() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
   if (!window.navigator) {
     return false;
   }
